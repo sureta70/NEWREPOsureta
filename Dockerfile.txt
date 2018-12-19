@@ -1,0 +1,30 @@
+FROM phusion/baseimage:0.10.0
+
+LABEL maintainer "suretadarren70@gmail.com"
+
+CMD ["/sbin/my_init"]
+
+# install packages
+RUN apt-get update && apt-get -fy upgrade
+RUN apt-get install -fy \
+git \
+python3 \
+python3-pip
+
+# create PKHunter dir
+RUN mkdir -p /opt/Hunter
+
+# create share directory
+RUN mkdir -p /opt/logfiles
+
+# clone Phishing Kit Hunter from GitHub into dir
+RUN git clone https://github.com/sureta70/NEWREPOsureta.git
+# install requirements' file 
+RUN pip3 install -r /opt/PKHunter/requirements.txt
+
+# You can now build the docker image:
+#   'docker build tad/hunter .'
+# ... and start it with some options (as your local log files repository):
+#   'docker run -d -P --name Hunter --volume /var/log:/opt/logfiles tad/hunter'
+# You can now execute  shell and start your analysis:
+#   'docker exec -ti tad/hunter /bin/bash'
